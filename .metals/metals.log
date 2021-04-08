@@ -1,0 +1,289 @@
+[0m2021.04.07 20:49:47 INFO  Started: Metals version 0.10.1 in workspace '/root/RevaturePorjects/ProjectZero' for client vscode 1.55.0.[0m
+[0m2021.04.07 20:49:48 INFO  time: initialize in 0.33s[0m
+[0m2021.04.07 20:49:48 WARN  Build server is not auto-connectable.[0m
+[0m2021.04.07 20:49:48 WARN  no build tool detected in workspace '/root/RevaturePorjects/ProjectZero'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.04.07 20:49:48 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/CLIFileManager/FileHelper.scala[0m
+[0m2021.04.07 20:49:49 INFO  no build target: using presentation compiler with only scala-library: 2.12.13[0m
+[0m2021.04.07 20:49:51 INFO  time: code lens generation in 1.62s[0m
+[0m2021.04.07 20:49:51 INFO  time: code lens generation in 1.62s[0m
+[0m2021.04.07 20:49:51 INFO  time: code lens generation in 2.63s[0m
+Apr 07, 2021 8:50:09 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+Apr 07, 2021 8:50:10 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: null
+java.lang.NullPointerException
+	at scala.reflect.internal.Definitions$DefinitionsClass.isByNameParamType(Definitions.scala:417)
+	at scala.reflect.internal.TreeInfo.isStableIdent(TreeInfo.scala:140)
+	at scala.reflect.internal.TreeInfo.isStableIdentifier(TreeInfo.scala:113)
+	at scala.reflect.internal.TreeInfo.isPath(TreeInfo.scala:102)
+	at scala.reflect.internal.TreeInfo.admitsTypeSelection(TreeInfo.scala:158)
+	at scala.tools.nsc.interactive.Global.stabilizedType(Global.scala:959)
+	at scala.tools.nsc.interactive.Global.typedTreeAt(Global.scala:807)
+	at scala.meta.internal.pc.SignatureHelpProvider.signatureHelp(SignatureHelpProvider.scala:23)
+
+Apr 07, 2021 8:50:15 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:50:16 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:50:16 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:50:17 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:50:17 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:50:17 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:50:17 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 07, 2021 8:52:24 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.IllegalArgumentException: 8 is not a valid line number, allowed [0..7]
+java.util.concurrent.CompletionException: java.lang.IllegalArgumentException: 8 is not a valid line number, allowed [0..7]
+	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:292)
+	at java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:308)
+	at java.util.concurrent.CompletableFuture.uniAccept(CompletableFuture.java:661)
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:646)
+	at java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:488)
+	at java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:1990)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1(CancelTokens.scala:40)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1$adapted(CancelTokens.scala:38)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.IllegalArgumentException: 8 is not a valid line number, allowed [0..7]
+	at scala.meta.internal.inputs.InternalInput.lineToOffset(InternalInput.scala:37)
+	at scala.meta.internal.inputs.InternalInput.lineToOffset$(InternalInput.scala:32)
+	at scala.meta.inputs.Input$VirtualFile.lineToOffset(Input.scala:80)
+	at scala.meta.inputs.Position$Range$.lineLength$1(Position.scala:57)
+	at scala.meta.inputs.Position$Range$.apply(Position.scala:60)
+	at scala.meta.internal.mtags.MtagsEnrichments$XtensionPositionLspInverse.toMeta(MtagsEnrichments.scala:200)
+	at scala.meta.internal.parsing.Trees.$anonfun$findLastEnclosingAt$5(Trees.scala:71)
+	at scala.Option.flatMap(Option.scala:271)
+	at scala.meta.internal.parsing.Trees.findLastEnclosingAt(Trees.scala:70)
+	at scala.meta.internal.metals.codeactions.InsertInferredType.$anonfun$contribute$1(InsertInferredType.scala:80)
+	at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:659)
+	at scala.util.Success.$anonfun$map$1(Try.scala:255)
+	at scala.util.Success.map(Try.scala:213)
+	at scala.concurrent.Future.$anonfun$map$1(Future.scala:292)
+	at scala.concurrent.impl.Promise.liftedTree1$1(Promise.scala:33)
+	at scala.concurrent.impl.Promise.$anonfun$transform$1(Promise.scala:33)
+	... 4 more
+
+Apr 07, 2021 8:54:02 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint fallbackResponseError
+SEVERE: Internal error: java.lang.IllegalArgumentException: 9 is not a valid line number, allowed [0..7]
+java.util.concurrent.CompletionException: java.lang.IllegalArgumentException: 9 is not a valid line number, allowed [0..7]
+	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:292)
+	at java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:308)
+	at java.util.concurrent.CompletableFuture.uniAccept(CompletableFuture.java:661)
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:646)
+	at java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:488)
+	at java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:1990)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1(CancelTokens.scala:40)
+	at scala.meta.internal.metals.CancelTokens$.$anonfun$future$1$adapted(CancelTokens.scala:38)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.lang.IllegalArgumentException: 9 is not a valid line number, allowed [0..7]
+	at scala.meta.internal.inputs.InternalInput.lineToOffset(InternalInput.scala:37)
+	at scala.meta.internal.inputs.InternalInput.lineToOffset$(InternalInput.scala:32)
+	at scala.meta.inputs.Input$VirtualFile.lineToOffset(Input.scala:80)
+	at scala.meta.inputs.Position$Range$.apply(Position.scala:59)
+	at scala.meta.internal.mtags.MtagsEnrichments$XtensionPositionLspInverse.toMeta(MtagsEnrichments.scala:200)
+	at scala.meta.internal.parsing.Trees.$anonfun$findLastEnclosingAt$5(Trees.scala:71)
+	at scala.Option.flatMap(Option.scala:271)
+	at scala.meta.internal.parsing.Trees.findLastEnclosingAt(Trees.scala:70)
+	at scala.meta.internal.metals.codeactions.InsertInferredType.$anonfun$contribute$1(InsertInferredType.scala:80)
+	at scala.concurrent.Future$.$anonfun$apply$1(Future.scala:659)
+	at scala.util.Success.$anonfun$map$1(Try.scala:255)
+	at scala.util.Success.map(Try.scala:213)
+	at scala.concurrent.Future.$anonfun$map$1(Future.scala:292)
+	at scala.concurrent.impl.Promise.liftedTree1$1(Promise.scala:33)
+	at scala.concurrent.impl.Promise.$anonfun$transform$1(Promise.scala:33)
+	... 4 more
+
+Apr 07, 2021 8:57:00 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+[0m2021.04.07 20:57:17 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/CLIFileManager/FileHelper.scala[0m
+[0m2021.04.07 21:01:23 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/CLIFileManager/FileHelper.scala[0m
+[0m2021.04.07 21:01:40 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/CLIFileManager/FileHelper.scala[0m
+[0m2021.04.07 21:03:00 INFO  shutting down Metals[0m
+[0m2021.04.08 13:11:06 INFO  Started: Metals version 0.10.1 in workspace '/root/RevaturePorjects/ProjectZero' for client vscode 1.55.0.[0m
+[0m2021.04.08 13:11:06 INFO  time: initialize in 0.41s[0m
+[0m2021.04.08 13:11:07 WARN  Build server is not auto-connectable.[0m
+[0m2021.04.08 13:11:07 WARN  no build tool detected in workspace '/root/RevaturePorjects/ProjectZero'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.04.08 13:11:07 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/CLIFileManager/FileHelper.scala[0m
+[0m2021.04.08 13:11:08 INFO  no build target: using presentation compiler with only scala-library: 2.12.13[0m
+[0m2021.04.08 13:11:10 INFO  time: code lens generation in 2.87s[0m
+Apr 08, 2021 1:11:12 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4
+[0m2021.04.08 13:11:13 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/FileManager/FileHelper.scala[0m
+[0m2021.04.08 13:11:27 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/FileManager/FileHelper.scala[0m
+Apr 08, 2021 1:11:38 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 08, 2021 1:11:38 PM scala.meta.internal.pc.CompletionProvider expected$1
+WARNING: null
+Apr 08, 2021 1:12:08 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+Apr 08, 2021 1:12:08 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: null
+java.lang.NullPointerException
+	at scala.reflect.internal.Definitions$DefinitionsClass.isByNameParamType(Definitions.scala:417)
+	at scala.reflect.internal.TreeInfo.isStableIdent(TreeInfo.scala:140)
+	at scala.reflect.internal.TreeInfo.isStableIdentifier(TreeInfo.scala:113)
+	at scala.reflect.internal.TreeInfo.isPath(TreeInfo.scala:102)
+	at scala.reflect.internal.TreeInfo.admitsTypeSelection(TreeInfo.scala:158)
+	at scala.tools.nsc.interactive.Global.stabilizedType(Global.scala:959)
+	at scala.tools.nsc.interactive.Global.typedTreeAt(Global.scala:807)
+	at scala.meta.internal.pc.SignatureHelpProvider.signatureHelp(SignatureHelpProvider.scala:23)
+
+Apr 08, 2021 1:12:29 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+Apr 08, 2021 1:12:29 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: null
+java.lang.NullPointerException
+	at scala.reflect.internal.Definitions$DefinitionsClass.isByNameParamType(Definitions.scala:417)
+	at scala.reflect.internal.TreeInfo.isStableIdent(TreeInfo.scala:140)
+	at scala.reflect.internal.TreeInfo.isStableIdentifier(TreeInfo.scala:113)
+	at scala.reflect.internal.TreeInfo.isPath(TreeInfo.scala:102)
+	at scala.reflect.internal.TreeInfo.admitsTypeSelection(TreeInfo.scala:158)
+	at scala.tools.nsc.interactive.Global.stabilizedType(Global.scala:959)
+	at scala.tools.nsc.interactive.Global.typedTreeAt(Global.scala:807)
+	at scala.meta.internal.pc.SignatureHelpProvider.signatureHelp(SignatureHelpProvider.scala:23)
+
+Apr 08, 2021 1:12:58 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+Apr 08, 2021 1:12:58 PM scala.meta.internal.pc.CompilerAccess handleError
+SEVERE: null
+java.lang.NullPointerException
+	at scala.reflect.internal.Definitions$DefinitionsClass.isByNameParamType(Definitions.scala:417)
+	at scala.reflect.internal.TreeInfo.isStableIdent(TreeInfo.scala:140)
+	at scala.reflect.internal.TreeInfo.isStableIdentifier(TreeInfo.scala:113)
+	at scala.reflect.internal.TreeInfo.isPath(TreeInfo.scala:102)
+	at scala.reflect.internal.TreeInfo.admitsTypeSelection(TreeInfo.scala:158)
+	at scala.tools.nsc.interactive.Global.stabilizedType(Global.scala:959)
+	at scala.tools.nsc.interactive.Global.typedTreeAt(Global.scala:807)
+	at scala.meta.internal.pc.SignatureHelpProvider.signatureHelp(SignatureHelpProvider.scala:23)
+
+[0m2021.04.08 13:13:09 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/FileManager/FileHelper.scala[0m
+Apr 08, 2021 1:15:01 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 492
+[0m2021.04.08 13:15:35 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+[0m2021.04.08 13:16:17 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+Apr 08, 2021 1:16:20 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 698
+Apr 08, 2021 1:16:22 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 707
+[0m2021.04.08 13:17:37 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/Opening.scala[0m
+[0m2021.04.08 13:17:52 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/UserOptions.scala[0m
+[0m2021.04.08 13:18:07 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/ExceptionParser.scala[0m
+[0m2021.04.08 13:18:35 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/UserInteaction.scala[0m
+Apr 08, 2021 1:18:37 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 888
+[0m2021.04.08 13:19:09 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+Apr 08, 2021 1:19:10 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 958
+Apr 08, 2021 1:20:26 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 971
+[0m2021.04.08 13:28:08 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/ExceptionParser.scala[0m
+[0m2021.04.08 13:32:06 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/ExceptionParser.scala[0m
+Apr 08, 2021 1:32:12 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 1884
+[0m2021.04.08 13:35:43 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/Opening.scala[0m
+Apr 08, 2021 1:35:48 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 2515
+[0m2021.04.08 13:41:29 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/UserOptions.scala[0m
+[0m2021.04.08 13:42:12 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/UserOptions.scala[0m
+[0m2021.04.08 13:42:14 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/UserOptions.scala[0m
+Apr 08, 2021 1:42:15 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3534
+Apr 08, 2021 1:42:16 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3540
+[0m2021.04.08 13:42:24 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+Apr 08, 2021 1:42:24 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3571
+Apr 08, 2021 1:42:28 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3577
+[0m2021.04.08 13:43:46 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/UserInteaction.scala[0m
+Apr 08, 2021 1:43:50 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3814
+[0m2021.04.08 13:44:09 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+Apr 08, 2021 1:44:15 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3914
+[0m2021.04.08 13:44:52 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/UserInteaction.scala[0m
+Apr 08, 2021 1:44:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 3996
+Apr 08, 2021 1:44:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4002
+Apr 08, 2021 1:44:58 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4007
+Apr 08, 2021 1:45:02 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4013
+Apr 08, 2021 1:45:21 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4093
+Apr 08, 2021 1:45:24 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4098
+Apr 08, 2021 1:45:27 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4104
+Apr 08, 2021 1:45:28 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4109
+Apr 08, 2021 1:45:30 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4115
+Apr 08, 2021 1:45:36 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4139
+[0m2021.04.08 13:45:46 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/Opening.scala[0m
+Apr 08, 2021 1:45:48 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4163
+[0m2021.04.08 13:45:54 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+Apr 08, 2021 1:45:58 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4196
+Apr 08, 2021 1:45:59 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4201
+Apr 08, 2021 1:46:06 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4238
+Apr 08, 2021 1:46:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4243
+Apr 08, 2021 1:46:14 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4261
+Apr 08, 2021 1:46:15 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4266
+[0m2021.04.08 13:46:24 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/Main.scala[0m
+Apr 08, 2021 1:46:27 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4293
+[0m2021.04.08 13:46:41 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/UserAid/UserOptions.scala[0m
+Apr 08, 2021 1:46:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4334
+Apr 08, 2021 1:46:44 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4341
+Apr 08, 2021 1:46:45 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4347
+Apr 08, 2021 1:46:46 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4353
+Apr 08, 2021 1:46:47 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4359
+Apr 08, 2021 1:46:55 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4369
+Apr 08, 2021 1:46:56 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4375
+Apr 08, 2021 1:46:58 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4381
+Apr 08, 2021 1:47:00 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4389
+Apr 08, 2021 1:47:01 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4395
+Apr 08, 2021 1:47:01 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4401
+[0m2021.04.08 13:47:03 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/FileManager/FileHelper.scala[0m
+Apr 08, 2021 1:47:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4407
+Apr 08, 2021 1:47:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4413
+Apr 08, 2021 1:47:05 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4419
+Apr 08, 2021 1:47:06 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4425
+Apr 08, 2021 1:47:07 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 4431
+[0m2021.04.08 13:47:28 WARN  no build target for: /root/RevaturePorjects/ProjectZero/clifilereader/src/main/scala/Main/UserInteaction.scala[0m
+Apr 08, 2021 1:47:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
