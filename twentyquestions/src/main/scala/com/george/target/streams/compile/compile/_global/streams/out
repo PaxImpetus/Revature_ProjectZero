@@ -1,0 +1,10 @@
+[0m[[0m[31merror[0m] [0m[0m/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/scala/com/george/Main.scala:4:8: object UserInteraction is not a member of package com.george[0m
+[0m[[0m[31merror[0m] [0m[0mimport com.george.UserInteraction[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/scala/com/george/Main.scala:10:9: not found: value ProgramInteraction[0m
+[0m[[0m[31merror[0m] [0m[0m        ProgramInteraction.printToConsole()[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/scala/com/george/Main.scala:21:13: not found: value ProgramInteraction[0m
+[0m[[0m[31merror[0m] [0m[0m            ProgramInteraction.parseSurvey(input)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m

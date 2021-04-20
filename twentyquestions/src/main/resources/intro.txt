@@ -1,0 +1,22 @@
+This is a Survey Game.
+We will ask you questions - some personal, some silly.
+You can expect to be asked simple answers, but the content is the issue.
+You are free to refrain from any questions asked
+There will be several different surveys, and you will be able to view aggregate statistics of everyone who participated in each survey.
+
+---Mimimum Viable Product will simply present stats
+---End Goal will provide complex tools to perform arithemtic operations on metrics
+
+Commands (Case Insensitive)
+short                                      Run a 5 Question Survey
+medium                                     Run a 10 Question Survey
+long                                       Run a 20 Question Survey
+upload {files} to [table]                  Add Files with Survey Results to Target Table. Supports JSON and CSV
+view {columns} from [table] for {math}     Read Column Results from Target Table.
+    Math Includes:
+        PM      Population Mean
+        PSD     Population Standard Deviation
+        SM      Sample Mean
+        SSD     Sample Standard Deviation
+        VAR     Variance
+exit                                       Close the application
