@@ -36404,3 +36404,5 @@ Caused by: java.lang.IllegalArgumentException: 7 is not a valid line number, all
 [0m2021.04.20 10:52:19 INFO  time: compiled root in 0.47s[0m
 [0m2021.04.20 10:54:05 INFO  compiling root (1 scala source)[0m
 [0m2021.04.20 10:54:05 INFO  time: compiled root in 0.44s[0m
+[0m2021.04.20 11:29:05 INFO  compiling root (1 scala source)[0m
+[0m2021.04.20 11:29:05 INFO  time: compiled root in 0.48s[0m
