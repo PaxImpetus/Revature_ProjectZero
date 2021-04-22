@@ -62,22 +62,26 @@ object ProgramInteraction{
 
 
     def newUser(cnx:Connection, credits:String):Unit={
+        var bulkSet = new ArrayBuffer[String]
         print("\nPlease Provide Your First Name:\t")
         val fName = StdIn.readLine()
+        bulkSet += s"'$fName'"
 
         print("\nPlease Provide Your Last Name:\t")
         val lName = StdIn.readLine()
+        bulkSet += s"'$lName'"
 
         print(s"\nUser Name Provided as $credits. Press Enter to Keep or Provide a New Username here:\t")
         var uName = StdIn.readLine()
         if(uName=="") uName = credits
+        bulkSet += s"'$uName'"
 
         print("\nPlease Provide Your Password:\t")
         val pWord = StdIn.readLine()
+        bulkSet += s"'$pWord'"
 
-        val bulkSet = s"'$fName','$lName','$uName','$pWord'"
         try{
-            DAO.insertInto(cnx, Constants.usersTableForm, bulkSet)
+            DAO.addUser(cnx, Constants.usersTableForm, bulkSet)
             Constants.currentUser = uName
             println(s"I am ${Constants.currentUser}")
         }
@@ -98,33 +102,18 @@ object ProgramInteraction{
 
 
     def parseSurvey(userIn:String):Unit={
-        val commandSequence:Regex = "(\\w+)\\s*(.*)\\s*(.*)".r
+        val commandSequence:Regex = "\\w*\\s*\\w*\\s*\\w*".r
 
         userIn.toLowerCase() match{
-            case commandSequence(arg0, arg1, arg2) if arg0 == "short" => runSurvey(Constants.smalTbl) //works
-            case commandSequence(arg0, arg1, arg2) if arg0 == "medium" => runSurvey(Constants.midlTbl) // works
-            case commandSequence(arg0, arg1, arg2) if arg0 == "long" => runSurvey(Constants.longTbl) // works
-            case commandSequence(arg0, arg1, arg2) if arg0 == "upload" => {uploadFiles(arg1, arg2)} // not yet working
-            case commandSequence("show", "mine", arg2) => {
-                try{
-                val dbBuilder = new DatabaseBuilder.DatabaseBuilder()
-                val dbMine = DAO.selectMy(dbBuilder.dbLaunch(), "*", arg2)
-                //do something with dbMine, is a ArrayBuffer[Any], possibly DataEntityShort, DataEntityMedium, DataEntityLong
-                println(dbMine)
-                dbBuilder.dbClose()
-                }
-                catch{
-                    case e:PSQLException =>{println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
-                }
-            } // "works", not complete
-            case commandSequence("view", arg1, arg2) => {
-                println("I hear you, I hear you...")
-                /*
-                val dbBuilder = new DatabaseBuilder.DatabaseBuilder()
-                val tableStats:mutable.ArrayBuffer[StatBall] = DAO.retrieveAllStats(dbBuilder, arg0)
-                println(statBallDisplay)
-                */
-            }
+            case "short" => runSurvey(Constants.smalTbl) //works
+            case "medium" => runSurvey(Constants.midlTbl) // works
+            case "long" => runSurvey(Constants.longTbl) // works
+            case commandSequence(arg0, arg1, arg2) if arg0 == "upload" => { uploadFiles(arg1, arg2) } // Last to Implement
+            case commandSequence(arg0, arg1, arg2) if arg0 == "show" => { retrieveStats(arg1) } // Doesn't Fire Right
+            case commandSequence(arg0, arg1, arg2) if arg0 == "view" => {
+                val stall = new DatabaseBuilder.DatabaseBuilder()
+                println(s"${statBallDisplay(DAO.retrieveAllStats(stall.dbLaunch(),arg1))}")
+            } // 
             case "exit" => {} //works
             case _ => {println("Nani senpai desu kun?")} //"works lmao"
         }
@@ -137,7 +126,7 @@ object ProgramInteraction{
         var bool = true
         try{
             val surveyFile=Source.fromResource(s"$selection.txt").getLines()
-            var container:String = ""
+            var container = new ArrayBuffer[Int]
             for(line <- surveyFile){
                 if(line.toString.startsWith("---")){ println(line)}
                 else{
@@ -151,22 +140,19 @@ object ProgramInteraction{
                         else{
                             val readerConversion:Int = reader.toInt 
                             //problematic control, checking string in float form is not a number, then converting string to int
-                            val readVal = surveyErrorCorrection(readerConversion)
-                            container += "," + readVal
+                            container += surveyErrorCorrection(readerConversion)
                             surveyToken = false
                         }
                     }while(surveyToken)
                 }
             }
-            container = container.substring(1)
-            println(container)
             val toDatabase = new DatabaseBuilder.DatabaseBuilder()
             val connected = toDatabase.dbLaunch()
 
             selection match{
-                case a if (selection == Constants.smalTbl) => {DAO.parseEntityExistence(connected, Constants.smallTableForm, container, Constants.questFormS ,Constants.currentUser)}
-                case b if (selection == Constants.midlTbl) => {DAO.parseEntityExistence(connected, Constants.mediumTableForm, container, Constants.questFormM, Constants.currentUser)}
-                case c if (selection == Constants.longTbl) => {DAO.parseEntityExistence(connected, Constants.largeTableForm, container, Constants.questFormL, Constants.currentUser)}
+                case a if (selection == Constants.smalTbl) => {DAO.parseEntityExistence(connected, Constants.smallTableForm, container, Constants.updateSml ,Constants.currentUser, Constants.smalTbl)}
+                case b if (selection == Constants.midlTbl) => {DAO.parseEntityExistence(connected, Constants.mediumTableForm, container, Constants.updateMid, Constants.currentUser, Constants.midlTbl)}
+                case c if (selection == Constants.longTbl) => {DAO.parseEntityExistence(connected, Constants.largeTableForm, container, Constants.updateLrg, Constants.currentUser,Constants.longTbl)}
             }
             
             toDatabase.dbClose()
@@ -196,12 +182,17 @@ object ProgramInteraction{
                         val fileReader = new Scanner(thisFile)
                     
                         while(fileReader.hasNext()){
+                            val intArray = new ArrayBuffer[Int]
                             val newRecord = fileReader.next()
+                            val recSet = newRecord.split(",")
+                            for(rec <- recSet){
+                                intArray += rec.toInt
+                            }
                             arg1 match{
-                                case "users" => {DAO.parseEntityExistence(entity, Constants.usersTableForm, newRecord, Constants.usersNotes, Constants.currentUser)}
-                                case "short" => {DAO.parseEntityExistence(entity, Constants.smallTableForm, newRecord, Constants.questFormS, Constants.currentUser)}
-                                case "medium" => {DAO.parseEntityExistence(entity, Constants.mediumTableForm, newRecord, Constants.questFormM, Constants.currentUser)}
-                                case "long" => {DAO.parseEntityExistence(entity, Constants.largeTableForm, newRecord, Constants.questFormL, Constants.currentUser)}                    
+                                case "users" => {DAO.parseEntityExistence(entity, Constants.usersTableForm, intArray, Constants.usersNotes, Constants.currentUser, Constants.userTbl)}
+                                case "short" => {DAO.parseEntityExistence(entity, Constants.smallTableForm, intArray, Constants.questFormS, Constants.currentUser, Constants.smalTbl)}
+                                case "medium" => {DAO.parseEntityExistence(entity, Constants.mediumTableForm, intArray, Constants.questFormM, Constants.currentUser, Constants.midlTbl)}
+                                case "long" => {DAO.parseEntityExistence(entity, Constants.largeTableForm, intArray, Constants.questFormL, Constants.currentUser, Constants.longTbl)}                    
                             }
                         }
                     }
@@ -223,16 +214,13 @@ object ProgramInteraction{
 
 
 
-    def retrieveStats(columns:String, tables:String, math:String):Unit={
+    def retrieveStats(table:String):Unit={
         //fetch and compute statistics from table
         try {
-            val tblSet = tables.split(",")
-            val dbPulley = new DatabaseBuilder.DatabaseBuilder()
-            val dbx = dbPulley.dbLaunch()
-            var myStats = ""
-            for (tbl <- tblSet){
-                myStats += DAO.selectMy(dbx, columns, tbl)
-            }
+            val dbBuilder = new DatabaseBuilder.DatabaseBuilder()
+            dbBuilder.dbClose()
+            var myStats = new StringBuilder("")
+            myStats.addAll(s"${DAO.selectMy(dbBuilder.dbLaunch(), "*", table)}")
         }
         catch{
             case e:PSQLException => {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
@@ -241,25 +229,23 @@ object ProgramInteraction{
 
 
 
-    def surveyErrorCorrection(x:Int):String={
+    def surveyErrorCorrection(x:Int):Int={
         x match{
-            case a if x > 10 => "10"
-            case b if x < 0 => "0"
-            case c if (0 < x & x < 10) => s"$x"
-            case _ => "5"
+            case a if x > 10 => 10
+            case b if x < 0 => 0
+            case c if (0 < x & x < 10) => x
+            case _ => 5
         }
     }
 
 
-    def statBallDisplay(abc:ArrayBuffer[StatBall]):String={
+    def statBallDisplay(xyz:StatBall):String={
         var cumulativeString = new StringBuilder("")
-        for(xyz <- abc){
             cumulativeString.addAll(s"Column: ${xyz.colName}\n" + 
             s"\tpopulation: ${xyz.counter}\n" + 
             s"\tpopulation mean: ${xyz.popMean}\n" + 
             s"\tpopulation standard deviation: ${xyz.stndDev}\n" +
             s"\tpopulation variance: ${xyz.varianc}\n\n")
-        }
         cumulativeString.toString
     }
 

@@ -1,0 +1,27 @@
+--- Question Response Range from 0 to 10, where 5 is true neutral---
+--- Ask Yourself - how true are these statements in your own voice?
+--- ~ 0 absolutely in opposition; 
+--- ~ 2 fairly disagreeable; 
+--- ~ 5 not a personal factor/ no opinion; 
+--- ~ 7 fairly agreeable; 
+--- ~ 10 absolutely in agreement; 
+1. Politics contain an important set of social topics to be considered
+2. Our nation's foreign policy is the most important factor in our defense strategy.
+3. Federal policy is more impactful than local.
+4. Owning property is more beneficial than owning a busuiness.
+5. Public Safety is the most important issue.
+6. Self Defense is a Human Right.
+7. You would be willing to relocate for marginally better opportunities.
+8. Laws should focus on social norms.
+9. Laws should focus on criminality.
+10. Rules are made to be broken.
+11. It is never okay to take the life of a fellow citizens.
+12. Without a dialog, we can only fight.
+13. Patience requires Discipline.
+14. Discipline Requires Patience.
+15. Class is determined by intelligence.
+16. Class is determined by wealth.
+17. We value the agreements we propose more than those we take on.
+18. We value the agreements we take on more than those we propose.
+19. The Chicken Came First.
+20. The Egg Came First.

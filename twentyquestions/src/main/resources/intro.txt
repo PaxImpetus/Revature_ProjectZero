@@ -15,7 +15,7 @@ long                                        Run a 20 Question Survey
 upload files 'table'                        Add Files with Survey Results to Target Table
                                                 Supports JSON and CSV
                                                 Directories are Comma Delimited
-show mine 'table'                           Returns the Sruvey Set of the Current User
+show 'table'                                Returns the Sruvey Set of the Current User
                                                 'table' is the name of the target table
 view 'table'                                Read Tables Statistics from Target Table.
                                                 'table' is the name of the target table
