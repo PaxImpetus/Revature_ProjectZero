@@ -7,39 +7,34 @@ case class User(
     firstName:String,
     lastName:String,
     userName:String,
-    passWord:String,
-    hasShort:Boolean,
-    hasMid:Boolean,
-    hasLong:Boolean
+    passWord:String
 )
 
+case class DataEntity()
+
 case class DataEntitySmall(
-    id:Int,
-    fk:Int,
     ans0:Int,
     ans1:Int,
     ans2:Int,
     ans3:Int,
-    ans4:Int
+    ans4:Int,
+    fk:String
 )
 
 object DataEntitySmall{
     def fromTableSet(xyz:ResultSet):DataEntitySmall={
         apply(
-            xyz.getInt("id"),
-            xyz.getInt("userKey"),
-            xyz.getInt("general"),
-            xyz.getInt("foreignPolicy"),
-            xyz.getInt("federalLocal"),
-            xyz.getInt("propertyBusiness"),
-            xyz.getInt("publicSafety")
+            xyz.getInt("quest0"),
+            xyz.getInt("quest1"),
+            xyz.getInt("quest2"),
+            xyz.getInt("quest3"),
+            xyz.getInt("quest4"),
+            xyz.getString("user_key"),
         )
     }
 }
 
 case class DataEntityMedium(
-    id:Int,
-    fk:Int,
     ans0:Int,
     ans1:Int,
     ans2:Int,
@@ -49,32 +44,30 @@ case class DataEntityMedium(
     ans6:Int,
     ans7:Int,
     ans8:Int,
-    ans9:Int
+    ans9:Int,
+    fk:String
 )
 
 object DataEntityMedium{
     def fromTableSet(xyz:ResultSet):DataEntityMedium={
         apply(
-            xyz.getInt("id"),
-            xyz.getInt("userKey"),
-            xyz.getInt("general"),
-            xyz.getInt("foreignPolicy"),
-            xyz.getInt("federalLocal"),
-            xyz.getInt("propertyBusiness"),
-            xyz.getInt("publicSafety"),
-            xyz.getInt("selfDefense"),
-            xyz.getInt("relocation"),
-            xyz.getInt("socialLaw"),
-            xyz.getInt("criminalLaw"),
-            xyz.getInt("breaker")
+            xyz.getInt("quest0"),
+            xyz.getInt("quest1"),
+            xyz.getInt("quest2"),
+            xyz.getInt("quest3"),
+            xyz.getInt("quest4"),
+            xyz.getInt("quest5"),
+            xyz.getInt("quest6"),
+            xyz.getInt("quest7"),
+            xyz.getInt("quest8"),
+            xyz.getInt("quest9"),
+            xyz.getString("user_key")
         )
     }
 }
 
 
 case class DataEntityLong(
-    id:Int,
-    fk:Int,
     ans0:Int,
     ans1:Int,
     ans2:Int,
@@ -94,34 +87,54 @@ case class DataEntityLong(
     ans16:Int,
     ans17:Int,
     ans18:Int,
-    ans19:Int
+    ans19:Int,
+    fk:String
 )
 
 object DataEntityLong{
     def fromTableSet(xyz:ResultSet):DataEntityLong={
         apply(
-            xyz.getInt("id"),
-            xyz.getInt("userKey"),
-            xyz.getInt("general"),
-            xyz.getInt("foreignPolicy"),
-            xyz.getInt("federalLocal"),
-            xyz.getInt("propertyBusiness"),
-            xyz.getInt("publicSafety"),
-            xyz.getInt("selfDefense"),
-            xyz.getInt("relocation"),
-            xyz.getInt("socialLaw"),
-            xyz.getInt("criminalLaw"),
-            xyz.getInt("breaker"),
-            xyz.getInt("merder"),
-            xyz.getInt("kombat"),
-            xyz.getInt("PoverD"),
-            xyz.getInt("DoverP"),
-            xyz.getInt("classI"),
-            xyz.getInt("classW"),
-            xyz.getInt("makeDeal"),
-            xyz.getInt("takeDeal"),
-            xyz.getInt("chicken"),
-            xyz.getInt("egg")
+            xyz.getInt("quest0"),
+            xyz.getInt("quest1"),
+            xyz.getInt("quest2"),
+            xyz.getInt("quest3"),
+            xyz.getInt("quest4"),
+            xyz.getInt("quest5"),
+            xyz.getInt("quest6"),
+            xyz.getInt("quest7"),
+            xyz.getInt("quest8"),
+            xyz.getInt("quest9"),
+            xyz.getInt("quest10"),
+            xyz.getInt("quest11"),
+            xyz.getInt("quest12"),
+            xyz.getInt("quest13"),
+            xyz.getInt("quest14"),
+            xyz.getInt("quest15"),
+            xyz.getInt("quest16"),
+            xyz.getInt("quest17"),
+            xyz.getInt("quest18"),
+            xyz.getInt("quest19"),
+            xyz.getString("user_key")
+        )
+    }
+}
+
+case class StatBall(
+    colName:String,
+    counter:Double,
+    popMean:Double,
+    stndDev:Double,
+    varianc:Double
+)
+
+object StatBall{
+    def fromStatSet(colName:String, xyz:ResultSet):StatBall={
+        apply(
+            colName,
+            xyz.getDouble("count"),
+            xyz.getDouble("avg"),
+            xyz.getDouble("stdDev"),
+            scala.math.pow(xyz.getDouble("stdDev"), 2.0)
         )
     }
 }

@@ -27,7 +27,7 @@ object DatabaseBuilder{
 
         def dbLaunch():Connection={
             classOf[org.postgresql.Driver].newInstance()
-            this.connex = DriverManager.getConnection(s"$defaultDB", s"$uN", s"$pW") // value getConnection is not a member of object java.sql.Connection
+            this.connex = DriverManager.getConnection(s"$dbName", s"$uN", s"$pW") // value getConnection is not a member of object java.sql.Connection
             connex
         }
 

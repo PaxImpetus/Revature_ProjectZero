@@ -3,84 +3,159 @@ package com.george.DataBase
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.PreparedStatement
+import java.beans.Statement
+import java.sql
+import com.george.Constants
+import com.george.ExceptionHandler
+import com.george.UserInteraction.ProgramInteraction
+import scala.collection.mutable
 
 object DAO{
+    
+    //Determine whether table contains entity and update/insert data appropraitely
+    def parseEntityExistence(cnx:Connection, tblForm:String, results:String, setForm:String, currentUser:String):Unit={
+        val isHere = confirmExistence(cnx, tblForm, currentUser)
+        if(isHere){
+            updateThis(cnx, tblForm, setForm, results)
+        }
+        else{
+            insertInto(cnx, tblForm, results)
+        }
+    }
+
+    def confirmExistence(cnx:Connection, tblForm:String, currentUser:String):Boolean={
+        val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
+        xSchema.execute()
+        var tempToken = ""
+        if(tblForm == Constants.userTbl){
+            tempToken = "userName"
+        }
+        else{
+            tempToken = "user_key"
+        }
+        val confirmation:PreparedStatement = cnx.prepareStatement(s"SELECT $tempToken FROM $tblForm WHERE $tempToken=?;")
+        confirmation.setString(1, s"$currentUser")
+        confirmation.execute()
+        val rs = confirmation.getResultSet()
+        if(rs.next) true
+        else false
+    }
+
+    def confirmCredits(cnx:Connection, userPW:String, userUN:String):Boolean={
+        val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
+        xSchema.execute()
+        val confirmation:PreparedStatement = cnx.prepareStatement(s"SELECT userName, userPass FROM users WHERE userName='$userUN';")
+        confirmation.execute()
+        val rs = confirmation.getResultSet()
+        var detectedUN = "" 
+        var detectedPW = ""
+        if(rs.next()){
+            detectedUN = rs.getString("userName")
+            detectedPW = rs.getString("userPass")
+        }
+        if(detectedUN == userUN & detectedPW == userPW){
+            println(s"Credentials Confirmed. Welcome, $userUN")
+            true
+        }
+        else{
+            println("Credentials Inderterminate. Please Try Again.")
+            false
+        }
+    }
 
     // Insert Results to Table
-    // This is the one i am sampling with
-    def insertSurveySmall(cnx:Connection, results:String):Unit={
+    // This is the one I am sampling with
+    def insertInto(cnx:Connection, tblForm:String, results:String):Unit={
         val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
         xSchema.execute()
         val inSurv:PreparedStatement = cnx.prepareStatement("INSERT INTO "+
-            "surveyshort(quest0,quest1,quest2,quest3,quest4) "+
-            s"VALUES ($results);")
-        //inSurv.setString(1, s"${tbName.toLowerCase()}")
-        //inSurv.setString(2, results.toLowerCase())
+            tblForm +
+            s" VALUES ($results);")
         inSurv.execute()
     }
 
-    def insertSurveyMedium(cnx:Connection, results:String):Unit={
+
+    def updateThis(cnx:Connection, tbl:String, setForm:String, results:String):Unit={
         val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
         xSchema.execute()
-        val inSurv:PreparedStatement = cnx.prepareStatement("INSERT INTO " +
-            "surveymedium(quest0,quest1,quest2,quest3,quest4,quest5,quest6,quest7,quest8,quest9) " +
-            s"VALUES ($results);")
-        //inSurv.setString(1, s"${tbName.toLowerCase()}")
-        //inSurv.setString(2, results.toLowerCase())
+        val inSurv:PreparedStatement = cnx.prepareStatement("UPDATE "+ tbl +
+            s" SET " + setForm + "WHERE ?=?;")
+            val resultSet = results.split(",")
+            var i = 1
+            for(result <- resultSet){
+                val corrector = ProgramInteraction.surveyErrorCorrection(result.asInstanceOf[Int])
+                inSurv.setInt(i, corrector.asInstanceOf[Int])
+                i+=1
+            }
+            i+=1
+            val tblKey = tbl match{
+                case Constants.userTbl => "userName"
+                case Constants.smalTbl => "user_key"
+                case Constants.midlTbl => "user_key"
+                case Constants.longTbl => "user_key"
+            }
+            inSurv.setString(i, s"$tblKey")
+            i+=1
+            inSurv.setString(i, s"'${Constants.currentUser}'")
         inSurv.execute()
     }
 
-    def insertSurveyLong(cnx:Connection, results:String):Unit={
+    def retrieveAllStats(cnx:Connection, tbName:String):mutable.ArrayBuffer[StatBall]={
+        val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';") //fine
+        xSchema.execute() // fine
+        val cumulativeStats = new mutable.ArrayBuffer[StatBall]() // necessary?
+        val setForm = tbName match{                         // --
+            case "short" => Constants.questFormS      // --
+            case "medium" => Constants.questFormM     // -- totally fine, this block
+            case "long" => Constants.questFormL       // --
+        }                                                   // --
+        val loopSet = setForm.split(",")                    // Array for strings, each entity represeting a data column from the given sruvey 
+        for(loop <- loopSet){                               // "for each column in the table's set of columns..."
+            var sltOne:PreparedStatement = cnx.prepareStatement(s"SELECT count(loop), avg(loop), stdDev(loop) FROM $tbName;") // get the average value and the std dev from some table
+            val resSet:ResultSet = sltOne.executeQuery()
+            cumulativeStats += StatBall.fromStatSet(loop, resSet)
+        }
+        cumulativeStats
+    }
+
+    // Retrieve User's Survey from target Table
+    def selectMy(cnx:Connection, clmSet:String, tbName:String):Any={
         val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
         xSchema.execute()
-        val inSurv:PreparedStatement = cnx.prepareStatement("INSERT INTO "+ 
-            "surveylong(quest0,quest1,quest2,quest3,quest4,quest5,quest6,quest7,quest8,quest9,quest10,quest11,quest12,quest13,quest14,quest15,quest16,quest17,quest18,quest19) " +
-            s"VALUES ($results);")
-        //inSurv.setString(1, s"${tbName.toLowerCase()}")
-        //inSurv.setString(2, results.toLowerCase())
-        inSurv.execute()
-    }
-
-    // Insert Account into DB
-    def insertBulk(cnx:Connection, tbName:String /*,fileSet:Array[String]*/):Unit={
-        var files = ""
-        val inUsr:PreparedStatement = cnx.prepareStatement(s"COPY ? FROM ? DELIMITER ',' CSV HEADER;")
-        inUsr.setString(1, s"$tbName")
-        inUsr.setString(2, s"$files")
-        inUsr.execute()
-    }
-    // Retrieve a Single Survey
-    def selectItem(cnx:Connection, dbName:String, uN:String):Unit={
-        var sltOne:PreparedStatement = cnx.prepareStatement(s"SELECT * FROM ? WHERE user_Name=?;")
-        sltOne.setString(1,s"$dbName")
-        sltOne.setString(2,s"'$uN'")
+        var sltOne:PreparedStatement = cnx.prepareStatement(s"SELECT $clmSet FROM users INNER JOIN $tbName ON users.userName=$tbName.user_key;")
         val resSet:ResultSet = sltOne.executeQuery()
-        //val res = sltOne.getResultSet() //value getResultSet is not a member of Boolean
-    }
-    // Retrieve Table Set
-    def selectTableStats(cnx:Connection, tbName:String, uN:String):Unit={
-        var sltAll = cnx.prepareStatement(s"SELECT * FROM ?;")
-        sltAll.setString(1, s"$tbName")
-        val resSet:ResultSet = sltAll.executeQuery()
-        while(resSet.next()){
-
+        try {
+            surveyReceptorSelector(tbName, resSet)
         }
-        //val res = sltAll.getResultSet() //value getResultSet is not a member of Boolean
+        catch{
+            case e:Exception => {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
+        }
     }
 
-    def selectSampleStats(cnx:Connection, tbName:String, uN:String):Unit={
-        var sltSome = cnx.prepareStatement(s"SELECT * FROM ?;")
-        sltSome.setString(1, s"$tbName")
-        val resSet:ResultSet = sltSome.executeQuery()
-        while(resSet.next()){
-            
+    def surveyReceptorSelector(tbName:String, results:ResultSet):Any={
+        tbName match{
+            case "surveyshort" => {
+                val deSmall = mutable.ArrayBuffer[DataEntitySmall]()
+                while(results.next){
+                    deSmall += DataEntitySmall.fromTableSet(results)
+                }
+                deSmall
+            }
+            case "surveymedium" => {
+                var deMid = mutable.ArrayBuffer[DataEntityMedium]()
+                while(results.next){
+                    deMid += DataEntityMedium.fromTableSet(results)
+                }
+                deMid
+            }
+            case "surveylong" => {
+                var deLong = mutable.ArrayBuffer[DataEntityLong]()
+                while(results.next){
+                    deLong+= DataEntityLong.fromTableSet(results)
+                }
+                deLong
+            }
         }
-        //val res = sltAll.getResultSet() //value getResultSet is not a member of Boolean
     }
-    /**
-      *     // Flush Table Contents
-      *     def truncateTable(cnx:Connection):Unit={} 
-      *     // Not necessary, but possible
-      */
 
 }
