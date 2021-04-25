@@ -13,6 +13,7 @@ import scala.io.BufferedSource
 import org.postgresql.util.PSQLException
 import com.george.Constants
 import scala.collection.immutable
+import javax.xml.crypto.Data
 
 object ProgramInteraction{
 
@@ -102,27 +103,36 @@ object ProgramInteraction{
 
 
     def parseSurvey(userIn:String):Unit={
-        val commandSequence:Regex = "\\w*\\s*\\w*\\s*\\w*".r
-
-        userIn.toLowerCase() match{
-            case "short" => runSurvey(Constants.smalTbl) //works
-            case "medium" => runSurvey(Constants.midlTbl) // works
-            case "long" => runSurvey(Constants.longTbl) // works
-            case commandSequence(arg0, arg1, arg2) if arg0 == "upload" => { uploadFiles(arg1, arg2) } // Last to Implement
-            case commandSequence(arg0, arg1, arg2) if arg0 == "show" => { retrieveStats(arg1) } // Doesn't Fire Right
-            case commandSequence(arg0, arg1, arg2) if arg0 == "view" => {
-                val stall = new DatabaseBuilder.DatabaseBuilder()
-                println(s"${statBallDisplay(DAO.retrieveAllStats(stall.dbLaunch(),arg1))}")
-            } // 
+        val commandSequence:Regex = "(\\w+)\\s+(.+)\\s+(\\w+)".r
+        println(userIn)
+        //.toLowerCase()
+        val dbBuilder = new DatabaseBuilder.DatabaseBuilder()
+        val launcher = dbBuilder.dbLaunch()
+        userIn match{
+            case commandSequence("survey", "short", arg2) => runSurvey(launcher, Constants.smalTbl) //works
+            case commandSequence("survey", "medium", arg2)=> runSurvey(launcher, Constants.midlTbl) // works
+            case commandSequence("survey", "long", arg2) => runSurvey(launcher, Constants.longTbl) // works
+            case commandSequence("upload", arg1, arg2) => {uploadFile(launcher, arg1, arg2)} // Last to Implement
+            case commandSequence("show", arg1, arg2)  => { retrieveStats(launcher, arg2) } // works
+            case commandSequence("view", arg1, arg2)  => { println(s"${DAO.retrieveAllStats(launcher,arg1)}") } // works
+            case commandSequence("drop", "my", arg2) =>{
+                if(arg2 == "name"){
+                    DAO.dropMe(launcher, "users")
+                }
+                else{
+                    DAO.dropMySurvey(launcher, arg2)
+                }
+            }
             case "exit" => {} //works
-            case _ => {println("Nani senpai desu kun?")} //"works lmao"
+            case _ => {println("Command Sequence Misinterpreted. Make sure the command keywords are lower case.")} //"works lmao"u
         }
+        dbBuilder.dbClose()
     }
 
 
 
 
-    def runSurvey(selection:String):Unit={
+    def runSurvey(cnx:Connection, selection:String):Unit={
         var bool = true
         try{
             val surveyFile=Source.fromResource(s"$selection.txt").getLines()
@@ -130,35 +140,21 @@ object ProgramInteraction{
             for(line <- surveyFile){
                 if(line.toString.startsWith("---")){ println(line)}
                 else{
-                    var surveyToken = true
-                    do {
-                        print(s"$line\t")
-                        val reader = StdIn.readLine()
-                        if(reader.toFloat.isNaN()){
-                            println("\nInput Value is Not a Number. Please Try Again")
-                        }
-                        else{
-                            val readerConversion:Int = reader.toInt 
-                            //problematic control, checking string in float form is not a number, then converting string to int
-                            container += surveyErrorCorrection(readerConversion)
-                            surveyToken = false
-                        }
-                    }while(surveyToken)
+                    print(s"$line\t")
+                    val reader = StdIn.readLine()
+                    val readerConversion:Int = reader.toInt 
+                    container += surveyErrorCorrection(readerConversion)
                 }
             }
-            val toDatabase = new DatabaseBuilder.DatabaseBuilder()
-            val connected = toDatabase.dbLaunch()
 
             selection match{
-                case a if (selection == Constants.smalTbl) => {DAO.parseEntityExistence(connected, Constants.smallTableForm, container, Constants.updateSml ,Constants.currentUser, Constants.smalTbl)}
-                case b if (selection == Constants.midlTbl) => {DAO.parseEntityExistence(connected, Constants.mediumTableForm, container, Constants.updateMid, Constants.currentUser, Constants.midlTbl)}
-                case c if (selection == Constants.longTbl) => {DAO.parseEntityExistence(connected, Constants.largeTableForm, container, Constants.updateLrg, Constants.currentUser,Constants.longTbl)}
+                case a if (selection == Constants.smalTbl) => {DAO.parseEntityExistence(cnx, Constants.smallTableForm, container, Constants.updateSml ,Constants.currentUser, Constants.smalTbl)}
+                case b if (selection == Constants.midlTbl) => {DAO.parseEntityExistence(cnx, Constants.mediumTableForm, container, Constants.updateMid, Constants.currentUser, Constants.midlTbl)}
+                case c if (selection == Constants.longTbl) => {DAO.parseEntityExistence(cnx, Constants.largeTableForm, container, Constants.updateLrg, Constants.currentUser,Constants.longTbl)}
             }
-            
-            toDatabase.dbClose()
         }
         catch{
-            case cce: ClassCastException=>{println("\nValue Passed in was not a number")}
+            case cce: ClassCastException=>{println("\nValue Passed in was not an integer")}
             case e: Exception=>{println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
 
         }
@@ -166,61 +162,43 @@ object ProgramInteraction{
 
 
 
-    def uploadFiles(arg0:String, arg1:String):Unit={
+    
 
-        val fileSet = arg0.split(",")
-        for(file <- fileSet) {
-            val thisFile:File = new File(file)
+    def uploadFile(cnx:Connection, arg1:String, arg2:String):Unit={
+        try{
+            val thisFile:File = new File(arg1)
             if(thisFile.exists()){
-                try{
-                    val dbBulk = new DatabaseBuilder.DatabaseBuilder()
-                    val entity:Connection = dbBulk.dbLaunch()
-                    if(file.endsWith(".json")){
-
-                    }
-                    else if(file.endsWith(".csv")){
-                        val fileReader = new Scanner(thisFile)
-                    
-                        while(fileReader.hasNext()){
-                            val intArray = new ArrayBuffer[Int]
-                            val newRecord = fileReader.next()
-                            val recSet = newRecord.split(",")
-                            for(rec <- recSet){
-                                intArray += rec.toInt
-                            }
-                            arg1 match{
-                                case "users" => {DAO.parseEntityExistence(entity, Constants.usersTableForm, intArray, Constants.usersNotes, Constants.currentUser, Constants.userTbl)}
-                                case "short" => {DAO.parseEntityExistence(entity, Constants.smallTableForm, intArray, Constants.questFormS, Constants.currentUser, Constants.smalTbl)}
-                                case "medium" => {DAO.parseEntityExistence(entity, Constants.mediumTableForm, intArray, Constants.questFormM, Constants.currentUser, Constants.midlTbl)}
-                                case "long" => {DAO.parseEntityExistence(entity, Constants.largeTableForm, intArray, Constants.questFormL, Constants.currentUser, Constants.longTbl)}                    
-                            }
+                if(arg1.endsWith(".json")){
+                    //last bit of implementation
+                }
+                if(arg1.endsWith(".csv")){
+                    val fileReader = new Scanner(thisFile)                    
+                    while(fileReader.hasNext()){
+                        //println(s"\n\nentity variable: $entity\nscanner variable: ${fileReader.nextLine}\ntable target: $arg2\n")
+                        if(arg2 == "users"){
+                            DAO.addImportedUserCSV(cnx, fileReader.nextLine.trim)
+                        }
+                        else{
+                            DAO.addImportedSurveyCSV(cnx, arg2, fileReader.nextLine.trim)
                         }
                     }
-                    else{
-                        println("File Not Compatible")
-                    }
-
-                    
-                    dbBulk.dbClose()
-                }
-                catch {
-                    case e: Exception=> {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
                 }
             }
-
         }
-
+        catch{
+            case e: Exception => {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
+        }
     }
 
 
 
-    def retrieveStats(table:String):Unit={
+
+    def retrieveStats(cnx:Connection, table:String):Unit={
         //fetch and compute statistics from table
         try {
-            val dbBuilder = new DatabaseBuilder.DatabaseBuilder()
-            dbBuilder.dbClose()
             var myStats = new StringBuilder("")
-            myStats.addAll(s"${DAO.selectMy(dbBuilder.dbLaunch(), "*", table)}")
+            myStats.addAll(s"${DAO.selectMy(cnx, "*", table)}")
+            println(myStats)
         }
         catch{
             case e:PSQLException => {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
@@ -237,17 +215,5 @@ object ProgramInteraction{
             case _ => 5
         }
     }
-
-
-    def statBallDisplay(xyz:StatBall):String={
-        var cumulativeString = new StringBuilder("")
-            cumulativeString.addAll(s"Column: ${xyz.colName}\n" + 
-            s"\tpopulation: ${xyz.counter}\n" + 
-            s"\tpopulation mean: ${xyz.popMean}\n" + 
-            s"\tpopulation standard deviation: ${xyz.stndDev}\n" +
-            s"\tpopulation variance: ${xyz.varianc}\n\n")
-        cumulativeString.toString
-    }
-
 
 }

@@ -13,4 +13,13 @@ object ExceptionFinder{
             case genex: Exception =>{genex.getMessage()} //  class java.lang.Exception is not a value
         }
     }
+    def intSort(checkVal:Any):Boolean={
+        try{
+            checkVal.asInstanceOf[Float].isNaN()
+            true
+        }
+        catch{
+            case e: Exception => false
+        }
+    }
 }

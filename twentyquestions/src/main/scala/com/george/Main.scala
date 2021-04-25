@@ -4,8 +4,8 @@ import scala.io.StdIn
 import com.george.UserInteraction
 
 object Main{
+    var connectionCondition = true
     def main(args:Array[String]):Unit={
-        var connectionCondition = true
         var userLogin = ""
 
         UserInteraction.ProgramInteraction.printToConsole()

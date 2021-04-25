@@ -1,0 +1,5 @@
+[0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/resources/surveyshort.txt,/root/RevaturePorjects/ProjectZero/twentyquestions/target/scala-2.13/classes/surveyshort.txt)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/resources/surveymedium.txt,/root/RevaturePorjects/ProjectZero/twentyquestions/target/scala-2.13/classes/surveymedium.txt)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/resources/surveylong.txt,/root/RevaturePorjects/ProjectZero/twentyquestions/target/scala-2.13/classes/surveylong.txt)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/root/RevaturePorjects/ProjectZero/twentyquestions/src/main/resources/intro.txt,/root/RevaturePorjects/ProjectZero/twentyquestions/target/scala-2.13/classes/intro.txt)[0m

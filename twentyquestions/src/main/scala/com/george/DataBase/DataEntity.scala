@@ -32,6 +32,17 @@ object DataEntitySmall{
             xyz.getString("user_key"),
         )
     }
+
+    def myShortStatDiplay(abc:DataEntitySmall):String={
+        var cumulativeString = new StringBuilder("")
+        cumulativeString.addAll(s"\nuser: ${abc.fk}\n" + 
+            s"\tI prefer Indoors over Outdoors.: ${abc.ans0}\n" + 
+            s"\tI prefer Relationships over Experiences: ${abc.ans1}\n" + 
+            s"\tI prefer Wealth over Value: ${abc.ans2}\n" +
+            s"\tI prefer Comfort over Luxury: ${abc.ans3}\n" +
+            s"\tI prefer Solidarity over Tolerance: ${abc.ans4}\n\n")
+        cumulativeString.toString
+    }
 }
 
 case class DataEntityMedium(
@@ -63,6 +74,21 @@ object DataEntityMedium{
             xyz.getInt("quest9"),
             xyz.getString("user_key")
         )
+    }
+    def myMediumStatDiplay(abc:DataEntityMedium):String={
+        var cumulativeString = new StringBuilder("")
+        cumulativeString.addAll(s"\nuser: ${abc.fk}\n" + 
+            s"\tI prefer Mashed Potatos over French Fries: ${abc.ans0}\n" +
+            s"\tIt is best to try new foods as a snack: ${abc.ans1}\n" +
+            s"\tIt eat a lot: ${abc.ans2}\n" +
+            s"\tIt is customary to eat meat in every meal: ${abc.ans3}\n" +
+            s"\tI am a vegan I do not eat any animal products: ${abc.ans4}\n" +
+            s"\tI prefer to eat what I want, not what I need: ${abc.ans5}\n" +
+            s"\tI consult my dietitian before eating other cultural dishes: ${abc.ans6}\n" +
+            s"\tI would rather eat at a a restaurant than cook at home: ${abc.ans7}\n" +
+            s"\tI would eat all day if I never had to worry about making money: ${abc.ans8}\n" +
+            s"\tIn the event of a famine, I would be the first to go: ${abc.ans9}\n\n")
+        cumulativeString.toString
     }
 }
 
@@ -117,6 +143,31 @@ object DataEntityLong{
             xyz.getString("user_key")
         )
     }
+    def myLongStatDiplay(abc:DataEntityLong):String={
+        var cumulativeString = new StringBuilder("")
+        cumulativeString.addAll(s"\nuser: ${abc.fk}\n" + 
+            s"\tPolitics contain an important set of social topics to be considered: ${abc.ans0}\n" + 
+            s"\tOur nation's foreign policy is the most important factor in our defense strategy: ${abc.ans1}\n" + 
+            s"\tFederal policy is more impactful than local: ${abc.ans2}\n" +
+            s"\tOwning property is more beneficial than owning a busuiness: ${abc.ans3}\n" +
+            s"\tPublic Safety is the most important issue: ${abc.ans4}\n" + 
+            s"\tSelf Defense is a Human Right: ${abc.ans5}\n" + 
+            s"\tYou would be willing to relocate for marginally better opportunities: ${abc.ans6}\n" +
+            s"\tLaws should focus on social norms: ${abc.ans7}\n" +
+            s"\tLaws should focus on criminality: ${abc.ans8}\n" + 
+            s"\tRules are made to be broken: ${abc.ans9}\n" +
+            s"\tIt is never okay to take the life of a fellow citizens: ${abc.ans10}\n" + 
+            s"\tWithout a dialog, we can only fight: ${abc.ans11}\n" +
+            s"\tPatience requires Discipline: ${abc.ans12}\n" +
+            s"\tDiscipline Requires Patience: ${abc.ans13}\n" + 
+            s"\tClass is determined by intelligence: ${abc.ans14}\n" + 
+            s"\tClass is determined by wealth: ${abc.ans15}\n" +
+            s"\tWe value the agreements we propose more than those we take on: ${abc.ans16}\n" +
+            s"\tWe value the agreements we take on more than those we propose: ${abc.ans17}\n" + 
+            s"\tThe Chicken Came First: ${abc.ans18}\n" +
+            s"\tThe Egg Came First: ${abc.ans19}\n\n")
+        cumulativeString.toString
+    }
 }
 
 case class StatBall(
@@ -136,5 +187,14 @@ object StatBall{
             xyz.getDouble("stdDev"),
             scala.math.pow(xyz.getDouble("stdDev"), 2.0)
         )
+    }
+    def statBallDisplay(xyz:StatBall):String={
+        var cumulativeString = new StringBuilder("")
+            cumulativeString.addAll(s"Column: ${xyz.colName}\n" + 
+            s"\tpopulation: ${xyz.counter}\n" + 
+            s"\tpopulation mean: ${xyz.popMean}\n" + 
+            s"\tpopulation standard deviation: ${xyz.stndDev}\n" +
+            s"\tpopulation variance: ${xyz.varianc}\n\n")
+        cumulativeString.toString
     }
 }
