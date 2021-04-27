@@ -14,6 +14,7 @@ import org.postgresql.util.PSQLException
 import com.george.Constants
 import scala.collection.immutable
 import javax.xml.crypto.Data
+import java.util.LinkedHashMap
 
 object ProgramInteraction{
 
@@ -104,14 +105,13 @@ object ProgramInteraction{
 
     def parseSurvey(userIn:String):Unit={
         val commandSequence:Regex = "(\\w+)\\s+(.+)\\s+(\\w+)".r
-        println(userIn)
         //.toLowerCase()
         val dbBuilder = new DatabaseBuilder.DatabaseBuilder()
         val launcher = dbBuilder.dbLaunch()
         userIn match{
-            case commandSequence("survey", "short", arg2) => runSurvey(launcher, Constants.smalTbl) //works
-            case commandSequence("survey", "medium", arg2)=> runSurvey(launcher, Constants.midlTbl) // works
-            case commandSequence("survey", "long", arg2) => runSurvey(launcher, Constants.longTbl) // works
+            case "short" => runSurvey(launcher, Constants.smalTbl) //works
+            case "medium" => runSurvey(launcher, Constants.midlTbl) // works
+            case "long" => runSurvey(launcher, Constants.longTbl) // works
             case commandSequence("upload", arg1, arg2) => {uploadFile(launcher, arg1, arg2)} // Last to Implement
             case commandSequence("show", arg1, arg2)  => { retrieveStats(launcher, arg2) } // works
             case commandSequence("view", arg1, arg2)  => { println(s"${DAO.retrieveAllStats(launcher,arg1)}") } // works
@@ -168,13 +168,19 @@ object ProgramInteraction{
         try{
             val thisFile:File = new File(arg1)
             if(thisFile.exists()){
-                if(arg1.endsWith(".json")){
-                    //last bit of implementation
+                val arg1Check = arg1.toLowerCase()
+                if(arg1Check.endsWith(".json")){
+                    val valueSet = CustomJSONParser.sortJSON(arg1, arg2)
+                    if(arg2 == "users"){
+                        DAO.addImportedUserJSON(cnx, valueSet)
+                    }
+                    else{
+                        DAO.addImportedSurveyJSON(cnx, arg2, valueSet)
+                    }
                 }
-                if(arg1.endsWith(".csv")){
+                if(arg1Check.endsWith(".csv")){
                     val fileReader = new Scanner(thisFile)                    
                     while(fileReader.hasNext()){
-                        //println(s"\n\nentity variable: $entity\nscanner variable: ${fileReader.nextLine}\ntable target: $arg2\n")
                         if(arg2 == "users"){
                             DAO.addImportedUserCSV(cnx, fileReader.nextLine.trim)
                         }
@@ -184,6 +190,7 @@ object ProgramInteraction{
                     }
                 }
             }
+            else println("not a file")
         }
         catch{
             case e: Exception => {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
@@ -204,8 +211,6 @@ object ProgramInteraction{
             case e:PSQLException => {println(ExceptionHandler.ExceptionFinder.xMatcher(e))}
         }
     }
-
-
 
     def surveyErrorCorrection(x:Int):Int={
         x match{

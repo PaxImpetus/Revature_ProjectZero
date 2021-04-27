@@ -19,4 +19,7 @@ object Constants{
     val questFormS = "quest0,quest1,quest2,quest3,quest4"
     val questFormM = "quest0,quest1,quest2,quest3,quest4,quest5,quest6,quest7,quest8,quest9"
     val questFormL = "quest0,quest1,quest2,quest3,quest4,quest5,quest6,quest7,quest8,quest9,quest10,quest11,quest12,quest13,quest14,quest15,quest16,quest17,quest18,quest19"
+    val smlQuest = "?,?,?,?,?,?"
+    val midQuest = "?,?,?,?,?,?,?,?,?,?,?"
+    val bigQuest = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
 }

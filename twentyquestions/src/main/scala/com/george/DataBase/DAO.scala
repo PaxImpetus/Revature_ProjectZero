@@ -5,16 +5,20 @@ import java.sql.ResultSet
 import java.sql.PreparedStatement
 import java.beans.Statement
 import java.sql
+import java.util.Date
 import com.george.Constants
 import com.george.ExceptionHandler
 import com.george.UserInteraction.ProgramInteraction
 import scala.collection.mutable
+import javax.print.attribute.standard.DateTimeAtCreation
+import java.text.SimpleDateFormat
+import java.util.LinkedHashSet
+import java.util.LinkedHashMap
 
 object DAO{
     
     //Determine whether table contains entity and update/insert data appropraitely
     def parseEntityExistence(cnx:Connection, targetTableForm:String, results:mutable.ArrayBuffer[Int], setForm:String, currentUser:String, tblForm:String):Unit={
-        println("is the error here?")
         val isPerson = confirmExistence(cnx, Constants.userTbl, currentUser)
         if(isPerson){
             val isHere = confirmExistence(cnx, tblForm, currentUser)
@@ -72,7 +76,6 @@ object DAO{
         val inSurv:PreparedStatement = cnx.prepareStatement("INSERT INTO "+
             tblForm +
             s" VALUES (${resultsSet.dropRight(1)});")
-        println(s"${inSurv.toString}")
         inSurv.execute()
     }
 
@@ -86,11 +89,16 @@ object DAO{
         for(res <- results){ // for every item in my array of values to insert
             resultsSet.addAll(s"$res,")// add the value a a string to a string builder object
         }
+        val serve = tblForm match{
+            case Constants.smallTableForm => "short"
+            case Constants.mediumTableForm => "medium"
+            case Constants.largeTableForm => "long"
+        }
         resultsSet.addAll(s"'${Constants.currentUser}'") // this is another value, relative to my project - the user name of the current user is the foreign key of each survey to userName
         val inSurv:PreparedStatement = cnx.prepareStatement("INSERT INTO "+
             tblForm +
-            s" VALUES ($resultsSet) ON CONFLICT user_key DO NOTHING;") // reads "INSERT INTO table VALUES (a,b,c,d,e,...);" - my tables for this insert include short, medium, and long
-        println(s"${inSurv.toString}") // show the user in the command line what the string looks like before executing
+            s" VALUES ($resultsSet) ON CONFLICT ON CONSTRAINT survey${serve}_pkey DO NOTHING;") // reads "INSERT INTO table VALUES (a,b,c,d,e,...);" - my tables for this insert include short, medium, and long
+
         inSurv.execute() // execute the command
     }
 
@@ -108,15 +116,12 @@ object DAO{
         }
         val inSurv:PreparedStatement = cnx.prepareStatement("UPDATE "+ tbl +
             " SET " + setForm + s" WHERE $tblKey='${Constants.currentUser}';")
-        println("1 make statement shell")
         var i = 1
-        println(s"${inSurv.toString}")
         for(result <- results){
             val corrector = ProgramInteraction.surveyErrorCorrection(result.asInstanceOf[Int])
             inSurv.setInt(i, corrector)
             i+=1
         }
-        println(s"3 ${inSurv.toString}")
         inSurv.execute()
     }
 
@@ -147,7 +152,6 @@ object DAO{
         xSchema.execute()
         var sltOne:PreparedStatement = cnx.prepareStatement(
             s"SELECT $clmSet FROM users INNER JOIN survey$tbName ON users.userName=survey$tbName.user_key WHERE userName = '${Constants.currentUser}';")
-        println(s"${sltOne.toString}")
         val resSet:ResultSet = sltOne.executeQuery()
         try {
             surveyReceptorSelector(s"survey$tbName", resSet)
@@ -186,7 +190,7 @@ object DAO{
         try{
             val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
             xSchema.execute()
-            var dropMine:PreparedStatement = cnx.prepareStatement(s"DROP FROM survey$tbName WHERE user_key=${Constants.currentUser};")
+            var dropMine:PreparedStatement = cnx.prepareStatement(s"DELETE FROM survey$tbName WHERE user_key='${Constants.currentUser}';")
             dropMine.execute()
         }
         catch{
@@ -198,7 +202,7 @@ object DAO{
         try{
             val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
             xSchema.execute()
-            var dropMine:PreparedStatement = cnx.prepareStatement(s"DROP FROM $tbName WHERE userName=${Constants.currentUser};")
+            var dropMine:PreparedStatement = cnx.prepareStatement(s"DELETE FROM $tbName WHERE userName='${Constants.currentUser}';")
             val check = dropMine.execute()
             if(check == true){
                 com.george.Main.connectionCondition = false
@@ -236,7 +240,6 @@ object DAO{
             inData.setInt(i,res.toInt)
             i+=1
         }
-        println(s"${inData.toString}")
         inData.execute()  
     }
 
@@ -251,8 +254,51 @@ object DAO{
         val inUser:PreparedStatement = cnx.prepareStatement("INSERT INTO "+
             Constants.usersTableForm +
             s" VALUES (${resultsSet.dropRight(1)}) ON CONFLICT ON CONSTRAINT users_pkey DO NOTHING;")
-        println(s"${inUser.toString}")
         inUser.execute()  
     }
 
+    def addImportedSurveyJSON(cnx:Connection, tbName:String, values:String):Unit={
+        val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
+        xSchema.execute()
+        var x = ""
+        var thisTbl = ""
+        tbName match{
+            case "short" => {x="short"; thisTbl=Constants.smallTableForm;}
+            case "medium" => {x="medium";thisTbl=Constants.mediumTableForm;}
+            case "long" => {x="long";thisTbl=Constants.largeTableForm;}
+        }
+        /*
+        val results = values.split("|")
+        var resultsSet = new StringBuilder("")
+        for(res <- results){
+            resultsSet.addAll(s"($res)")
+            if(res!=results.last){
+                resultsSet.addOne(',')
+            }
+        }
+        */
+        val inData:PreparedStatement = cnx.prepareStatement("INSERT INTO "+
+            thisTbl +
+            s" VALUES ${values} ON CONFLICT ON CONSTRAINT survey${x}_pkey DO NOTHING;")
+        inData.execute() 
+    }
+
+    def addImportedUserJSON(cnx:Connection, values:String):Unit={
+        val xSchema:PreparedStatement = cnx.prepareStatement("set schema 'Surveys';")
+        xSchema.execute()
+        /*
+        val results = values.split("|")
+        var resultsSet = new StringBuilder("")
+        for(res <- results){
+            resultsSet.addAll(s"($res)")
+            if(res != results.last){
+                resultsSet.addOne(',')
+            }
+        }
+        */
+        val inUser:PreparedStatement = cnx.prepareStatement("INSERT INTO "+
+            Constants.usersTableForm +
+            s" VALUES ${values} ON CONFLICT ON CONSTRAINT users_pkey DO NOTHING;")
+        inUser.execute() 
+    }
 }

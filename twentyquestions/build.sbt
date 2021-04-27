@@ -11,6 +11,8 @@ lazy val root = (project in file("."))
     libraryDependencies += scalaTest % Test,
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     libraryDependencies += "org.postgresql" % "postgresql" % "42.2.19",
+    libraryDependencies += "com.lihaoyi" %% "upickle" % "0.9.5",
+    libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.7.3",
     scalacOptions ++= Seq("-deprecation", "-feature"),
     trapExit := false
   )

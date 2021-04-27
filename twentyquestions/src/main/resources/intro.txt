@@ -9,11 +9,11 @@ There will be several different surveys, and you will be able to view aggregate 
 ---End Goal will provide complex tools to perform arithemtic operations on metrics
 
 Commands (Case Insensitive)
-survey short                                       Run a 5 Question Survey
+short                                       Run a 5 Question Survey
 
-survey medium                                      Run a 10 Question Survey
+medium                                      Run a 10 Question Survey
 
-survey long                                        Run a 20 Question Survey
+long                                        Run a 20 Question Survey
 
 upload files 'table'                        Add Files with Survey Results to Target Table
                                                 Supports JSON and CSV
@@ -24,6 +24,8 @@ show my 'table'                             Returns the Sruvey Set of the Curren
 
 drop my name                                Remove current user's account from database
                                                 This action terminates the program
+                                                Dropping users directly removes all
+                                                    corresponding surveys from all tables
 
 drop my 'table'                             Remove current user's survey from target table
 
